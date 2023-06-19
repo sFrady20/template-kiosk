@@ -1,6 +1,7 @@
 import {
   app,
   shell,
+  screen,
   BrowserWindow,
   BrowserWindowConstructorOptions,
   ipcMain,
@@ -82,11 +83,20 @@ export default class Main<API extends object> {
   private _createWindow(
     options?: BrowserWindowConstructorOptions
   ): BrowserWindow {
+    var display = screen.getPrimaryDisplay();
+
+    const { width, height } = display.workAreaSize;
+
     // Create the browser window.
     const window = new BrowserWindow({
-      width: 900,
-      height: 670,
+      width,
+      height,
+      maxWidth: 99999,
+      maxHeight: 99999,
       show: false,
+      frame: false,
+      alwaysOnTop: true,
+      kiosk: true,
       autoHideMenuBar: true,
       ...(process.platform === "linux" ? { icon } : {}),
       ...options,
